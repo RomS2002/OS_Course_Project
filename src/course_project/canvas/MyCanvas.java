@@ -20,16 +20,17 @@ public class MyCanvas extends JPanel {
 
     private void drawLineWithPercentage(Graphics2D g2, int x1, int y1, int x2, int y2,
                                         double percentageFromStart, double percentageToEnd) {
-        x1 = x1 + (int) ((x2 - x1) * percentageFromStart);
-        y1 = y1 + (int) ((y2 - y1) * percentageFromStart);
-        x2 = x1 + (int) ((x2 - x1) * percentageToEnd);
-        y2 = y1 + (int) ((y2 - y1) * percentageToEnd);
 
-        if((x2 == x1) && (y2 == y1)) {
+        int new_x1 = x1 + (int) ((x2 - x1) * percentageFromStart);
+        int new_y1 = y1 + (int) ((y2 - y1) * percentageFromStart);
+        int new_x2 = x1 + (int) ((x2 - x1) * percentageToEnd);
+        int new_y2 = y1 + (int) ((y2 - y1) * percentageToEnd);
+
+        if((new_x2 == new_x1) && (new_y2 == new_y1)) {
             return;
         }
 
-        g2.drawLine(x1, y1, x2, y2);
+        g2.drawLine(new_x1, new_y1, new_x2, new_y2);
     }
 
     private void drawByVertex(Graphics2D g2, Process process, int[] vertexX, int[] vertexY) {
@@ -123,6 +124,8 @@ public class MyCanvas extends JPanel {
         Image buf = createImage(this.getWidth(), this.getHeight());
 
         Graphics2D g2 = (Graphics2D) buf.getGraphics();
+
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         g2.setStroke(new BasicStroke(2));
         g2.setColor(Color.WHITE);

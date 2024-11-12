@@ -13,14 +13,17 @@ import java.io.IOException;
 
 public class ProcessPanel extends JPanel {
 
-    CustomButton plusButton = new CustomButton("images/plus_button.png");
-    CustomButton clearButton = new CustomButton("images/clear_button.png");
-
     Controller controller;
+
+    private CustomButton plusButton;
+    private CustomButton clearButton;
 
     public ProcessPanel(Controller controller) {
 
         this.controller = controller;
+        this.plusButton = new CustomButton("images/plus_button.png", controller);
+        this.clearButton = new CustomButton("images/clear_button.png", controller);
+
 
         setPreferredSize(new Dimension(300, 400));
         plusButton.addActionListener(e -> {
@@ -31,7 +34,10 @@ public class ProcessPanel extends JPanel {
         });
         add(plusButton);
 
-        clearButton.addActionListener(e -> controller.getProcessManager().clearProgress());
+        clearButton.addActionListener(e -> {
+            controller.getProcessManager().clearProgress();
+            controller.repaintCanvas();
+        });
         add(clearButton);
 
         setOpaque(false);
@@ -42,8 +48,11 @@ public class ProcessPanel extends JPanel {
         Image processBG;
 
         int textX = x + 58;
-        int textY = y + 20;
+        int textY = y + 15;
         int dy = 15;
+
+        int pid_x = x + 210;
+        int pid_y = y + 10;
 
         try {
             switch(process.getStatus()) {
@@ -64,6 +73,9 @@ public class ProcessPanel extends JPanel {
             g2.drawString(text.substring(0, delimiterInd1), textX, textY);
             g2.drawString(text.substring(delimiterInd1, delimiterInd2), textX, textY + dy);
             g2.drawString(text.substring(delimiterInd2), textX, textY + 2 * dy);
+
+            g2.setFont(new Font("TimesNewRoman", Font.BOLD, 9));
+            g2.drawString("pid: " + process.getPid(), pid_x, pid_y);
         } catch(IOException e) {
             throw new RuntimeException(e);
         }
@@ -79,24 +91,31 @@ public class ProcessPanel extends JPanel {
 
         int drawProcX = 30;
         int drawProcY = 70;
-        int dy = 86;
+        int dy = 76;
 
         for(Process process : controller.getProcessManager().getProcessList()) {
             drawProcess(g2, process, drawProcX, drawProcY);
             drawProcY += dy;
         }
 
+
+        ((Graphics2D)(g)).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+        ((Graphics2D)(g)).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
         g.drawImage(buff, 0, 0, null);
     }
 }
 
 class CustomButton extends JButton {
 
-    Image buttonImage;
+    private Image buttonImage;
+    private Controller controller;
 
-    public CustomButton(String filename) {
+    public CustomButton(String filename, Controller controller) {
         try {
             buttonImage = ImageIO.read(new File(filename));
+            this.controller = controller;
         } catch(IOException e) {
             throw new RuntimeException(e);
         }
@@ -110,6 +129,14 @@ class CustomButton extends JButton {
 
     @Override
     protected void paintComponent(Graphics g) {
+        if(controller.getProcessManager().getProcessList().size() == 5 &&
+                buttonImage.getWidth(this) < 100) {
+            setEnabled(false);
+            return;
+        } else {
+            setEnabled(true);
+        }
+
         int width = buttonImage.getWidth(this);
         int height = buttonImage.getHeight(this);
 

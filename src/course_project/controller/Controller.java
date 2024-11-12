@@ -45,4 +45,8 @@ public class Controller {
     public void stopTimer() {
         timer.stop();
     }
+
+    public void repaintCanvas() {
+        canvas.repaint();
+    }
 }

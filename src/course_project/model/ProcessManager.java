@@ -62,7 +62,6 @@ public class ProcessManager {
     }
 
     public void clearProgress() {
-
         for(Process process : activeProcesses) {
             process.setPercentageOnClear(process.getPercentage());
         }
