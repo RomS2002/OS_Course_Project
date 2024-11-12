@@ -91,7 +91,7 @@ public class ProcessPanel extends JPanel {
 
         int drawProcX = 30;
         int drawProcY = 70;
-        int dy = 76;
+        int dy = 66;
 
         for(Process process : controller.getProcessManager().getProcessList()) {
             drawProcess(g2, process, drawProcX, drawProcY);
