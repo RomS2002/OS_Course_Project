@@ -29,6 +29,8 @@ public class ProcessForm extends JFrame {
     private JSlider ySlider;
     private JLabel xValueLabel;
     private JLabel yValueLabel;
+    private JLabel priorityLabel;
+    private JSpinner prioritySpinner;
 
     private Controller controller;
 
@@ -45,6 +47,7 @@ public class ProcessForm extends JFrame {
         }
 
         durationSpinner.setValue(1);
+        prioritySpinner.setValue(1);
 
         xValueLabel.setText(String.valueOf(xSlider.getValue()));
         yValueLabel.setText(String.valueOf(ySlider.getValue()));
@@ -56,7 +59,8 @@ public class ProcessForm extends JFrame {
 
             Process process = new Process(Figure.getByName(figureComboBox.getSelectedItem().toString()),
                     FigureColor.getByName(colorComboBox.getSelectedItem().toString()),
-                    xSlider.getValue(), ySlider.getValue(), (int) durationSpinner.getValue());
+                    xSlider.getValue(), ySlider.getValue(), (int) durationSpinner.getValue(),
+                    (int) prioritySpinner.getValue());
 
             controller.getProcessManager().addProcess(process);
             controller.startTimer();

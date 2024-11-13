@@ -54,6 +54,9 @@ public class ProcessPanel extends JPanel {
         int pid_x = x + 210;
         int pid_y = y + 10;
 
+        int prior_x = x + 200;
+        int prior_y = y + 20;
+
         try {
             switch(process.getStatus()) {
                 case NEW -> processBG = ImageIO.read(new File("images/process_wait.png"));
@@ -76,6 +79,7 @@ public class ProcessPanel extends JPanel {
 
             g2.setFont(new Font("TimesNewRoman", Font.BOLD, 9));
             g2.drawString("pid: " + process.getPid(), pid_x, pid_y);
+            g2.drawString("prior: " + process.getPriority(), prior_x, prior_y);
         } catch(IOException e) {
             throw new RuntimeException(e);
         }

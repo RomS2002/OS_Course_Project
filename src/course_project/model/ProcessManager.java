@@ -31,7 +31,9 @@ public class ProcessManager {
 
         for(int i = 0; i < activeProcesses.size(); i++) {
             Process oldProcess = activeProcesses.get(i);
-            if(newProcess.getDuration() < oldProcess.getDuration()) {
+            if(newProcess.getDuration() < oldProcess.getDuration() ||
+                    newProcess.getPriority() > oldProcess.getPriority()) {
+
                 activeProcesses.add(i, newProcess);
                 if(i == 0) {
                     oldProcess.stopProcess();

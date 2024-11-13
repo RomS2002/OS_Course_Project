@@ -13,13 +13,14 @@ public class Process {
     private final int x;
     private final int y;
     private final double duration;
+    private final int priority;
 
     private double percentage = 0.0;
     private double percentageOnClear = 0.0;
 
     private ProcessStatus status;
 
-    public Process(Figure figure, FigureColor color, int x, int y, int duration) {
+    public Process(Figure figure, FigureColor color, int x, int y, int duration, int priority) {
         this.pid = next_pid;
         next_pid++;
 
@@ -28,6 +29,7 @@ public class Process {
         this.x = x;
         this.y = y;
         this.duration = duration;
+        this.priority = priority;
 
         status = ProcessStatus.NEW;
     }
@@ -70,6 +72,10 @@ public class Process {
 
     public void setPercentageOnClear(double percentageOnClear) {
         this.percentageOnClear = percentageOnClear;
+    }
+
+    public int getPriority() {
+        return priority;
     }
 
     public ProcessStatus getStatus() {
