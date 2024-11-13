@@ -31,8 +31,10 @@ public class ProcessManager {
 
         for(int i = 0; i < activeProcesses.size(); i++) {
             Process oldProcess = activeProcesses.get(i);
-            if(newProcess.getDuration() < oldProcess.getDuration() ||
-                    newProcess.getPriority() > oldProcess.getPriority()) {
+
+            if(newProcess.getPriority() > oldProcess.getPriority() ||
+                    (newProcess.getPriority() == oldProcess.getPriority() &&
+                            newProcess.getDuration() < oldProcess.getDuration())) {
 
                 activeProcesses.add(i, newProcess);
                 if(i == 0) {
